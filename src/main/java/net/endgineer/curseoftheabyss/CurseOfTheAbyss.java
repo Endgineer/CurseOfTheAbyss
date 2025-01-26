@@ -6,6 +6,7 @@ import net.endgineer.curseoftheabyss.core.ModConfigs;
 import net.endgineer.curseoftheabyss.core.ModItems;
 import net.endgineer.curseoftheabyss.core.ModOverlays;
 import net.endgineer.curseoftheabyss.network.PacketHandler;
+import net.endgineer.curseoftheabyss.util.creativemd.enhancedvisuals.common.addon.curseoftheabyss.CurseOfTheAbyssShaders;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -59,6 +60,7 @@ public class CurseOfTheAbyss {
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             PacketHandler.init();
+            CurseOfTheAbyssShaders.load();
         });
     }
 

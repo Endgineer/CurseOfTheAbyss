@@ -99,7 +99,7 @@ public class Abyss {
 
         if(y > 8) return field;
 
-        for (int octave = 0; octave < 7; octave++) {
+        for(int octave = 0; octave < 7; octave++) {
             field += Math.abs(
                 OpenSimplex2S.noise3_ImproveXZ(
                     seed,

@@ -6,9 +6,12 @@ import croissantnova.sanitydim.SanityProcessor;
 import croissantnova.sanitydim.capability.SanityProvider;
 import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
 import net.endgineer.curseoftheabyss.CurseOfTheAbyss;
+import net.endgineer.curseoftheabyss.client.StrainsData;
 import net.endgineer.curseoftheabyss.common.Abyss;
 import net.endgineer.curseoftheabyss.common.CurseCapability;
 import net.endgineer.curseoftheabyss.common.CurseProvider;
+import net.endgineer.curseoftheabyss.util.creativemd.enhancedvisuals.client.VisualManager;
+import net.endgineer.curseoftheabyss.util.creativemd.enhancedvisuals.client.render.EVRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -20,10 +23,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -97,7 +102,7 @@ public class ModEvents {
                         Map<String, ICurioStacksHandler> curios = handler.getCurios();
                         curios.forEach((id, stacksHandler) -> {
                             IDynamicStackHandler stacks = stacksHandler.getStacks();
-                            for (int i = 0; i < stacks.getSlots(); i++) {
+                            for(int i = 0; i < stacks.getSlots(); i++) {
                                 stacks.setStackInSlot(i, ItemStack.EMPTY);
                             }
                         });
@@ -188,23 +193,24 @@ public class ModEvents {
     //     }
     // }
 
-    // @SubscribeEvent
-    // public static void onRenderTick(RenderTickEvent event) {
-    //     if(event.phase.equals(TickEvent.Phase.END)) {
-    //         EVRenderer.render();
-    //     }
-    // }
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void onRenderTick(RenderTickEvent event) {
+        if(event.phase.equals(TickEvent.Phase.END)) {
+            EVRenderer.render();
+        }
+    }
 
-    // @OnlyIn(Dist.CLIENT)
-    // @SubscribeEvent
-    // public static void onRenderGuiOverlayEvent(RenderGuiOverlayEvent event) {
-    //     Minecraft mc = Minecraft.getInstance();
-    //     if(!mc.isPaused()) {
-    //         if(StrainsData.getDeprivationProgress() == 1) {
-    //             event.setCanceled(true);
-    //         }
-    //     }
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void onRenderGuiOverlayEvent(RenderGuiOverlayEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        if(!mc.isPaused()) {
+            if(StrainsData.getDeprivationProgress() == 1) {
+                event.setCanceled(true);
+            }
+        }
 
-    //     VisualManager.onTick(mc.player);
-    // }
+        VisualManager.onTick(mc.player);
+    }
 }
