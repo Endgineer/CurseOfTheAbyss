@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 
 import net.endgineer.curseoftheabyss.core.ModConfigs;
 import net.endgineer.curseoftheabyss.core.ModItems;
+import net.endgineer.curseoftheabyss.network.PacketHandler;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,7 +40,11 @@ public class CurseOfTheAbyss {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ModConfigs.SPEC);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {}
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            PacketHandler.init();
+        });
+    }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
