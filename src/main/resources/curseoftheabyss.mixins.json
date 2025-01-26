@@ -1,0 +1,10 @@
+{
+    "required": true,
+    "package": "net.endgineer.curseoftheabyss.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "refmap": "curseoftheabyss.refmap.json",
+    "mixins": ["NoiseBasedChunkGeneratorMixin", "PostChainAccessor"],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
