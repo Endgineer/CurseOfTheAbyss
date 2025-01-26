@@ -1,6 +1,9 @@
 package net.endgineer.curseoftheabyss;
 
 import com.mojang.logging.LogUtils;
+
+import net.endgineer.curseoftheabyss.core.ModItems;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -22,6 +25,8 @@ public class CurseOfTheAbyss {
     public CurseOfTheAbyss() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModItems.register(modEventBus);
+
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -31,7 +36,11 @@ public class CurseOfTheAbyss {
 
     private void commonSetup(final FMLCommonSetupEvent event) {}
 
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {}
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(ModItems.STAR_COMPASS);
+        }
+    }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {}

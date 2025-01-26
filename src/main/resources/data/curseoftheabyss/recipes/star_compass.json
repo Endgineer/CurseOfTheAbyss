@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": ["EDE", "DSD", "EDE"],
+    "key": {
+      "E": {
+        "item": "minecraft:echo_shard"
+      },
+      "D": {
+        "item": "minecraft:diamond"
+      },
+      "S": {
+        "item": "minecraft:nether_star"
+      }
+    },
+    "result": {
+      "item": "curseoftheabyss:star_compass"
+    }
+}
