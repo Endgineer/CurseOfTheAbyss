@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 
 import net.endgineer.curseoftheabyss.core.ModConfigs;
 import net.endgineer.curseoftheabyss.core.ModItems;
+import net.endgineer.curseoftheabyss.core.ModOverlays;
 import net.endgineer.curseoftheabyss.network.PacketHandler;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,6 +31,7 @@ public class CurseOfTheAbyss {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.register(modEventBus);
+        ModOverlays.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
