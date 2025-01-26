@@ -29,7 +29,7 @@ public class StrainsPacket {
     public static void handle(StrainsPacket message, Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
 
-        if (context.getDirection().getReceptionSide().isClient()) {
+        if(context.getDirection().getReceptionSide().isClient()) {
             context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> StrainsData.update(message.progress_numbness, message.progress_deprivation)));
         }
 

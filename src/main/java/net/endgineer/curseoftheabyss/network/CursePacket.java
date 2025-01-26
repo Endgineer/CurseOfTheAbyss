@@ -26,7 +26,7 @@ public class CursePacket {
     public static void handle(CursePacket message, Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
 
-        if (context.getDirection().getReceptionSide().isClient()) {
+        if(context.getDirection().getReceptionSide().isClient()) {
             context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CurseData.update(message.field)));
         }
 
