@@ -52,7 +52,7 @@ public class CurseCapability implements Serializable {
         Level level = player.getCommandSenderWorld();
         boolean overworld = level.dimension().location().getPath() == "overworld";
         
-        double field = overworld ? Abyss.field(level.getServer().getLevel(level.dimension()).getSeed(), x, y, z, level.getGameTime()) : 0;
+        double field = overworld ? Abyss.field(level.getServer().getLevel(level.dimension()).getSeed(), x, y, z, level.getGameTime(), level.getDayTime()) : 0;
         
         double current_depth = Math.min(y, 0);
 
