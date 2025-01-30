@@ -33,7 +33,7 @@ import org.slf4j.Logger;
 public class CurseOfTheAbyss {
     public static final String MODID = "curseoftheabyss";
     
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public CurseOfTheAbyss() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
