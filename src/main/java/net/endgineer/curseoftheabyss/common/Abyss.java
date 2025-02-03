@@ -94,25 +94,23 @@ public class Abyss {
         return 1-integrity;
     }
 
-    private static double moon_presence(double y, long daytime, double y_limit) {
-        if(y < 0) return 1;
-        
+    private static double moon_presence(double y, long daytime) {
         final double BRIGHTNESS_GAIN = 48.0 / 11.0;
         final double BRIGHTNESS_BIAS = -13.0 / 11.0;
         
         double moon_brightness = Math.max(0, BRIGHTNESS_GAIN * Math.abs((daytime - 6000) / 24000.0 - Math.floor((daytime + 6000) / 24000.0)) + BRIGHTNESS_BIAS);
         double moon_phase = 2 * Math.abs((daytime - 114000) / 192000.0 - Math.floor((daytime - 18000) / 192000.0));
         double moon_presence = moon_brightness * moon_phase;
+
+        double moon_tide = ModVariables.FIELD.HIGH_TIDE + (ModVariables.FIELD.LOW_TIDE - ModVariables.FIELD.HIGH_TIDE) * (1 - moon_presence);
+        moon_presence = 8 * moon_brightness * moon_phase;
         
-        return moon_presence * (1 - Math.min(y, y_limit) / y_limit);
+        return Math.pow((Math.min(Math.max(-ModVariables.ABYSS.SPAN, y), moon_presence) - moon_presence) / (-ModVariables.ABYSS.SPAN - moon_presence), moon_tide);
     }
 
     public static double field(long seed, double x, double y, double z, long gametime, long daytime) {
         double field = 0;
-
-        final double Y_LIMIT = 8;
-        if(y > Y_LIMIT) return field;
-
+        
         for(int octave = 0; octave < 7; octave++) {
             field += Math.abs(
                 OpenSimplex2S.noise3_ImproveXZ(
@@ -124,6 +122,6 @@ public class Abyss {
             ) / Math.pow(2, 6-octave);
         }
 
-        return Abyss.moon_presence(y, daytime, Y_LIMIT) * Math.min(Abyss.pressure(y) + field*(1-Abyss.pressure(y)), 1);
+        return Abyss.moon_presence(y, daytime) * Math.min(Abyss.pressure(y) + field*(1-Abyss.pressure(y)), 1);
     }
 }
