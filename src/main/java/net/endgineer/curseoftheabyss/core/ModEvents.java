@@ -10,10 +10,16 @@ import net.endgineer.curseoftheabyss.client.StrainsData;
 import net.endgineer.curseoftheabyss.common.Abyss;
 import net.endgineer.curseoftheabyss.common.CurseCapability;
 import net.endgineer.curseoftheabyss.common.CurseProvider;
+import net.endgineer.curseoftheabyss.mixin.SoundEngineAccessor;
+import net.endgineer.curseoftheabyss.mixin.SoundManagerAccessor;
 import net.endgineer.curseoftheabyss.util.creativemd.enhancedvisuals.client.VisualManager;
 import net.endgineer.curseoftheabyss.util.creativemd.enhancedvisuals.client.render.EVRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.sounds.ChannelAccess;
+import net.minecraft.client.sounds.SoundEngine;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -185,5 +191,15 @@ public class ModEvents {
         int color = (int) (opacity * 255) << 24;
         event.getGuiGraphics().fill(RenderType.guiOverlay(), 0, 0, event.getWindow().getScreenWidth(), event.getWindow().getScreenHeight(), color);
         mc.getProfiler().pop();
+        
+        SoundManager manager = mc.getSoundManager();
+        SoundEngine engine = ((SoundManagerAccessor) manager).getSoundEngine();
+        Map<SoundInstance, ChannelAccess.ChannelHandle> sounds = ((SoundEngineAccessor) engine).getInstanceToChannel();
+        sounds.forEach((p_217926_1_, p_217926_2_) -> {
+            float f = ((SoundEngineAccessor) engine).invokeCalculateVolume(p_217926_1_);
+            p_217926_2_.execute((p_217923_1_) -> {
+                p_217923_1_.setVolume((float) (mc.isPaused() ? f : f*(1-StrainsData.getDeprivationProgress())));
+            });
+        });
     }
 }
