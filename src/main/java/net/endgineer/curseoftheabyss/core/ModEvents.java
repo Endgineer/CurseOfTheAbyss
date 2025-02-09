@@ -13,6 +13,7 @@ import net.endgineer.curseoftheabyss.common.CurseProvider;
 import net.endgineer.curseoftheabyss.util.creativemd.enhancedvisuals.client.VisualManager;
 import net.endgineer.curseoftheabyss.util.creativemd.enhancedvisuals.client.render.EVRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -164,35 +165,6 @@ public class ModEvents {
         }
     }
     
-    // @OnlyIn(Dist.CLIENT)
-    // @SubscribeEvent
-    // public static void onPlaySound(PlaySoundEvent event) {
-    //     if(StrainsData.getDeprivationProgress() == 1 && event.getSound().getSource() != SoundSource.MASTER) {
-    //         event.setSound(null);
-    //     }
-    // }
-
-    // @OnlyIn(Dist.CLIENT)
-    // @SubscribeEvent
-    // public static void onRenderFog(RenderFogEvent event) {
-    //     if(StrainsData.getDeprivationProgress() > 0) {
-    //         event.setCanceled(true);
-    //         event.setFogShape(FogShape.SPHERE);
-    //         event.scaleNearPlaneDistance((float) (1 - StrainsData.getDeprivationProgress()));
-    //         event.scaleFarPlaneDistance((float) (1 - StrainsData.getDeprivationProgress()));
-    //     }
-    // }
-
-    // @OnlyIn(Dist.CLIENT)
-    // @SubscribeEvent
-    // public static void onFogColor(FogColors color) {
-    //     if(StrainsData.getDeprivationProgress() > 0) {
-    //         color.setRed((float) (1 - StrainsData.getDeprivationProgress()));
-    //         color.setBlue((float) (1 - StrainsData.getDeprivationProgress()));
-    //         color.setGreen((float) (1 - StrainsData.getDeprivationProgress()));
-    //     }
-    // }
-
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onRenderTick(RenderTickEvent event) {
@@ -205,12 +177,13 @@ public class ModEvents {
     @SubscribeEvent
     public static void onRenderGuiOverlayEvent(RenderGuiOverlayEvent event) {
         Minecraft mc = Minecraft.getInstance();
-        if(!mc.isPaused()) {
-            if(StrainsData.getDeprivationProgress() == 1) {
-                event.setCanceled(true);
-            }
-        }
-
+        
         VisualManager.onTick(mc.player);
+        
+        mc.getProfiler().push("visual_deprivation");
+        float opacity = (float) StrainsData.getDeprivationProgress();
+        int color = (int) (opacity * 255) << 24;
+        event.getGuiGraphics().fill(RenderType.guiOverlay(), 0, 0, event.getWindow().getScreenWidth(), event.getWindow().getScreenHeight(), color);
+        mc.getProfiler().pop();
     }
 }
