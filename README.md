@@ -85,3 +85,11 @@ This mod adds integration with [Thirst Was Taken](https://github.com/ghen-git/Th
 ### Scaled
 
 Though [Scaled](https://github.com/Lyof429/Scaled) does not interact with this mod, it is still recommended for those that seek increasing difficulty with depth.
+
+### Music Triggers
+
+[Music Triggers](https://github.com/TheComputerizer/Music-Triggers) can be used to evoke feelings of awe, dread, and more!
+
+### Traveler's Titles
+
+[Traveler's Titles](https://github.com/YUNG-GANG/Travelers-Titles) can be used to evoke feelings of awe, dread, and more- or to simply indicate that the player has reached a certain layer of the Abyss.
