@@ -100,12 +100,7 @@ public class Abyss {
         
         double moon_brightness = Math.max(0, BRIGHTNESS_GAIN * Math.abs((daytime - 6000) / 24000.0 - Math.floor((daytime + 6000) / 24000.0)) + BRIGHTNESS_BIAS);
         double moon_phase = 2 * Math.abs((daytime - 114000) / 192000.0 - Math.floor((daytime - 18000) / 192000.0));
-        double moon_presence = moon_brightness * moon_phase;
-
-        double moon_tide = ModVariables.FIELD.HIGH_TIDE + (ModVariables.FIELD.LOW_TIDE - ModVariables.FIELD.HIGH_TIDE) * (1 - moon_presence);
-        moon_presence = 8 * moon_brightness * moon_phase;
-        
-        return Math.pow((Math.min(Math.max(-ModVariables.ABYSS.SPAN, y), moon_presence) - moon_presence) / (-ModVariables.ABYSS.SPAN - moon_presence), moon_tide);
+        return moon_brightness * moon_phase;
     }
 
     public static double field(long seed, double x, double y, double z, long gametime, long daytime) {
