@@ -80,3 +80,19 @@ Though [Scaled](https://github.com/Lyof429/Scaled) does not interact with this m
 ### Traveler's Titles
 
 [Traveler's Titles](https://github.com/YUNG-GANG/Travelers-Titles) can be used to evoke feelings of awe, dread, and more- or to simply indicate that the player has reached a certain layer of the Abyss.
+
+# Configuration
+
+This section discusses the mathematical models and rationale behind the field to aid users in understanding how to configure the mod to their needs. Inspired by the $hydrostatic\ pressure$ responsible for decompression sickness, the Abyss field was modelled as a 6D pressure field that mimics the formula of $hydrostatic\ pressure$, as shown below. There are some noteworthy differences, namely that each of the constituents are scalar fields and the Abyss' gravity field is simply 1 everywhere.
+
+$$P(\xi, x, y, z, t, \tau) = \rho(\xi, x, y, z, t, \tau) \cdot 1 \cdot h(y)$$
+
+The $\rho(\xi, x, y, z, t, \tau)$ function is the field's density or the concentration of the field at a given 6D point. The $h(y)$ function is the field's column depth or how much field influence is above the player's head. In terms of variables, we have the world seed $\xi$, the spatial coordinates $x$, $y$ and $z$, the universal time $t$, and the astronomical time $\tau$.
+
+<!-- MATHEMATICAL MODELS GO HERE -->
+
+<p align="center">
+  <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/.vscode/fabric.jpg?raw=true" height="50%" width="50%">
+</p>
+
+We can visualize how the curse occurs by taking a single 2D slice of the 3D field, represented in the picture above. A delver can freely descend or move within the slice without concerns. The moment the delver attempts to ascend, however, the slice stretches around them, resisting their ascent. The delver does not feel this resistance. Instead, they accumulate a **longing** for their lowest-reached depth that grows more and more severe as they ascend. At some point, the quantity of field stretching around them, represented by this longing, becomes too great to bear, causing some of the field to finally yield, manifesting strains on the delver in the process.
