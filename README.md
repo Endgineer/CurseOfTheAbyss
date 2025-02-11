@@ -87,7 +87,7 @@ This section discusses the mathematical models and rationale behind the field to
 
 $$P(\xi, x, y, z, t, \tau) = \rho(\xi, x, y, z, t, \tau) \cdot 1 \cdot h(y)$$
 
-The $\rho(\xi, x, y, z, t, \tau)$ function is the field's density or the concentration of the field at a given 6D point. The $h(y)$ function is the field's column depth or how much field influence is above the player's head. In terms of variables, we have the world seed $\xi$, the spatial coordinates $x$, $y$ and $z$, the universal time $t$, and the astronomical time $\tau$.
+The $\rho(\xi, x, y, z, t, \tau)$ function is the field's density or the concentration of the field at a given 6D point. The $h(y)$ function is the field's column depth or how much field influence is above the player's head. In terms of variables, we have the world seed $\xi$, the spatial coordinates $x$, $y$ and $z$, the universal time $t$ which cannot be affected and counts the age of the world, and the astronomical time $\tau$ which is affected by the `/time` command.
 
 <!-- MATHEMATICAL MODELS GO HERE -->
 
