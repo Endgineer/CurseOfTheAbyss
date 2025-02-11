@@ -3,15 +3,15 @@ package net.endgineer.curseoftheabyss.config.spec.abyss.sections;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class FieldSection {
-    public final int DEFAULT_XZ_PERIOD = 10;
+    public final int DEFAULT_XZ_PERIOD = 1;
     public final int MINIMUM_XZ_PERIOD = 1;
     public final ForgeConfigSpec.ConfigValue<Integer> XZ_PERIOD;
 
-    public final int DEFAULT_Y_PERIOD = 10;
+    public final int DEFAULT_Y_PERIOD = 1;
     public final int MINIMUM_Y_PERIOD = 1;
     public final ForgeConfigSpec.ConfigValue<Integer> Y_PERIOD;
 
-    public final int DEFAULT_T_PERIOD = 20000;
+    public final int DEFAULT_T_PERIOD = 2000;
     public final int MINIMUM_T_PERIOD = 1;
     public final ForgeConfigSpec.ConfigValue<Integer> T_PERIOD;
     
