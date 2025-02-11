@@ -18,11 +18,11 @@ public class Abyss {
     }
 
     private static double pressure(double y) {
-        return Math.min(Math.max(0, -y/ModVariables.ABYSS.SPAN), 1);
+        return Math.min(Math.max(0, -y * ModVariables.ABYSS.INVERSE_SPAN), 1);
     }
 
     public static double boundary(int layer) {
-        return -(ModVariables.ABYSS.SPAN/7.0)*layer;
+        return -ModVariables.ABYSS.LEVEL_DEPTH * layer;
     }
 
     public static double distortion(double field, double y) {
@@ -94,13 +94,14 @@ public class Abyss {
         return 1-integrity;
     }
 
-    private static double moon_presence(double y, long daytime) {
-        final double BRIGHTNESS_GAIN = 48.0 / 11.0;
-        final double BRIGHTNESS_BIAS = -13.0 / 11.0;
-        
-        double moon_brightness = Math.max(0, BRIGHTNESS_GAIN * Math.abs((daytime - 6000) / 24000.0 - Math.floor((daytime + 6000) / 24000.0)) + BRIGHTNESS_BIAS);
-        double moon_phase = 2 * Math.abs((daytime - 114000) / 192000.0 - Math.floor((daytime - 18000) / 192000.0));
+    private static double moon_presence(long daytime) {
+        double moon_brightness = Math.max(0, ModVariables.FIELD.MOON_BRIGHTNESS_GAIN * Math.abs((daytime - 6000) * ModVariables.FIELD.TICK_IN_DAYS - Math.floor((daytime + 6000) * ModVariables.FIELD.TICK_IN_DAYS)) + ModVariables.FIELD.MOON_BRIGHTNESS_BIAS);
+        double moon_phase = 2 * Math.abs((daytime - 114000) * ModVariables.FIELD.TICK_IN_MONTHS - Math.floor((daytime - 18000) * ModVariables.FIELD.TICK_IN_MONTHS));
         return moon_brightness * moon_phase;
+    }
+
+    private static double column_depth(double y) {
+        return 1.0D / (1.0D + Math.exp(ModVariables.FIELD.DEPTH_SIGMOID_TEMPERATURE * (64 * y * ModVariables.ABYSS.INVERSE_SPAN + ModVariables.FIELD.DEPTH_SIGMOID_BIAS)));
     }
 
     public static double field(long seed, double x, double y, double z, long gametime, long daytime) {
@@ -110,13 +111,20 @@ public class Abyss {
             field += Math.abs(
                 OpenSimplex2S.noise3_ImproveXZ(
                     seed,
-                    x / (ModVariables.FIELD.XZ_PERIOD * Math.pow(2, octave)),
-                    y / (ModVariables.FIELD.Y_PERIOD * Math.pow(2, octave)) - ((double) gametime / ModVariables.FIELD.T_PERIOD),
-                    z / (ModVariables.FIELD.XZ_PERIOD * Math.pow(2, octave))
+                    x * ModVariables.FIELD.XZ_FREQUENCIES[octave],
+                    y * ModVariables.FIELD.Y_FREQUENCIES[octave] - gametime * ModVariables.FIELD.T_FREQUENCY,
+                    z * ModVariables.FIELD.XZ_FREQUENCIES[octave]
                 )
-            ) / Math.pow(2, 6-octave);
+            ) * ModVariables.FIELD.HARMONIC_AMPLITUDES[octave];
         }
 
-        return Abyss.moon_presence(y, daytime) * Math.min(Abyss.pressure(y) + field*(1-Abyss.pressure(y)), 1);
+        double moon_absence = 1 - Abyss.moon_presence(daytime);
+        field /= (1 + ModVariables.FIELD.HARMONIC_MAXFIELD * moon_absence);
+        
+        double background_gradient = Abyss.pressure(y);
+        double field_density = Math.min(background_gradient + field * (1 - background_gradient), 1);
+        double field_column = Abyss.column_depth(y);
+        
+        return field_density * field_column;
     }
 }
