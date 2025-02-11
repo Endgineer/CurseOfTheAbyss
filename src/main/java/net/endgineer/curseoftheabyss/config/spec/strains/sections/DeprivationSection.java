@@ -16,13 +16,13 @@ public class DeprivationSection {
     public final String DEFAULT_LAYER4_RANGE = "[0, 0]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER4_RANGE;
 
-    public final String DEFAULT_LAYER5_RANGE = "[0, 0]";
+    public final String DEFAULT_LAYER5_RANGE = "[10, 15]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER5_RANGE;
 
-    public final String DEFAULT_LAYER6_RANGE = "[0, 0]";
+    public final String DEFAULT_LAYER6_RANGE = "[10, 15]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER6_RANGE;
 
-    public final String DEFAULT_LAYER7_RANGE = "[0, 0]";
+    public final String DEFAULT_LAYER7_RANGE = "[10, 15]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER7_RANGE;
 
     public DeprivationSection(ForgeConfigSpec.Builder builder) {

@@ -4,25 +4,25 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.regex.Pattern;
 
 public class ExhaustionSection {
-    public final String DEFAULT_LAYER1_RANGE = "[0, 0]";
+    public final String DEFAULT_LAYER1_RANGE = "[10, 10]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER1_RANGE;
 
-    public final String DEFAULT_LAYER2_RANGE = "[0, 0]";
+    public final String DEFAULT_LAYER2_RANGE = "[10, 10]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER2_RANGE;
 
-    public final String DEFAULT_LAYER3_RANGE = "[0, 0]";
+    public final String DEFAULT_LAYER3_RANGE = "[10, 10]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER3_RANGE;
 
-    public final String DEFAULT_LAYER4_RANGE = "[0, 0]";
+    public final String DEFAULT_LAYER4_RANGE = "[10, 10]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER4_RANGE;
 
-    public final String DEFAULT_LAYER5_RANGE = "[0, 0]";
+    public final String DEFAULT_LAYER5_RANGE = "[10, 10]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER5_RANGE;
 
-    public final String DEFAULT_LAYER6_RANGE = "[0, 0]";
+    public final String DEFAULT_LAYER6_RANGE = "[10, 10]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER6_RANGE;
 
-    public final String DEFAULT_LAYER7_RANGE = "[0, 0]";
+    public final String DEFAULT_LAYER7_RANGE = "[10, 10]";
     public final ForgeConfigSpec.ConfigValue<String> LAYER7_RANGE;
 
     public ExhaustionSection(ForgeConfigSpec.Builder builder) {
