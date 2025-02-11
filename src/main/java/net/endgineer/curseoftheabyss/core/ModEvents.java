@@ -136,7 +136,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onServerChatEvent(ServerChatEvent event) {
         event.getPlayer().getCapability(CurseProvider.CURSE).ifPresent(curse -> {
-            event.setMessage(Component.translatable((event.getPlayer().level().dimension().location().getPath() == "overworld" ? event.getPlayer().getY() : 0)+"\n"+curse.getDerangement()+"\n"+event.getUsername()+"\n"+event.getMessage()));
+            event.setMessage(Component.translatable((event.getPlayer().level().dimension().location().getPath() == "overworld" ? event.getPlayer().getY() : 0)+":"+curse.getDerangement()+":"+event.getUsername()+":"+event.getMessage().getString()));
         });
     }
 
@@ -145,9 +145,12 @@ public class ModEvents {
     public static void onClientChatReceived(ClientChatReceivedEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
 
-        String[] constituents = event.getMessage().getString().split("\n", 4);
+        String message = event.getMessage().getString();
+        if(!message.matches("^<.*> .+$")) return;
 
-        if(constituents.length != 4) { return; }
+        message = message.split("^<.*> ")[1];
+        String[] constituents = message.split(":", 4);
+        if(constituents.length != 4) return;
         
         double loss = Abyss.loss(Double.parseDouble(constituents[0]), minecraft.player.level().dimension().location().getPath() == "overworld" ? minecraft.player.getY() : 0);
         double corruption = Double.parseDouble(constituents[1])*loss;
