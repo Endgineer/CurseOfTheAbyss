@@ -88,10 +88,7 @@ public class ModEvents {
                     });
                 }
                 
-                float damage = (float) curse.getStrains().observeDeformation(true);
-                if(damage > 0) {
-                    event.player.hurt(new DamageSource(Abyss.CURSE_DAMAGE), damage);
-                }
+                event.player.hurt(new DamageSource(Abyss.CURSE_DAMAGE), (float) curse.getStrains().observeDeformation(true));
                 
                 curse.getStrains().observeDeprivation(true);
             });
