@@ -71,7 +71,7 @@ public class ModEvents {
 
                 if(ModList.get().isLoaded("thirst")) {
                     event.player.getCapability(ModCapabilities.PLAYER_THIRST).ifPresent(thirst -> {
-                        thirst.addExhaustion(event.player, (float) curse.getStrains().observeExhaustion(false));
+                        thirst.addExhaustion(event.player, (float) curse.getStrains().observeExhaustion(false) / 5.0F);
                     });
                 }
                 event.player.getFoodData().addExhaustion((float) curse.getStrains().observeExhaustion(true));
