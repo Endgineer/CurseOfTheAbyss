@@ -81,7 +81,7 @@ Though [Scaled](https://github.com/Lyof429/Scaled) does not interact with this m
 
 [Traveler's Titles](https://github.com/YUNG-GANG/Travelers-Titles) can be used to evoke feelings of awe, dread, and more- or to simply indicate that the player has reached a certain layer of the Abyss.
 
-# Configuration
+# Design / Documentation / Configuration
 
 This section discusses the mathematical models and rationale behind the field to aid users in understanding how to configure the mod to their needs. Inspired by the $hydrostatic\ pressure$ responsible for decompression sickness, the Abyss field was modelled as a 6D pressure field that mimics the formula of $hydrostatic\ pressure$, as shown below. There are some noteworthy differences, namely that each of the constituents are scalar fields and the Abyss' gravity field is simply 1 everywhere.
 
@@ -93,8 +93,8 @@ The $\rho(\xi, x, y, z, t, \tau)$ function is the field's density or the concent
   <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/.vscode/fabric.jpg?raw=true" height="50%" width="50%">
 </p>
 
-We can imagine that the 3D field is thus many of these fabric sheets stacked on top of each other, that these fabric sheets are invisible to the naked eye and permeable, and that each of these fabric sheets undulates with time. A delver can freely move horizontally within these sheets without concern. When a delver descents through the sheets, each sheet the delver passes through is permanently bound to the delver's soul, without visibly reacting. The risk of being afflicted by the curse begins when the delver attempts to ascend. Each sheet below the delver that is bound to them begins to stretch upwards, as if trying to pull the delver back down. The delver does not feel anything, but they accumulate a **longing** for the deepest sheet bound to their soul. When the maximum longing $L$ is exceeded, every **per-tick** distance ascended induces a stress $s$ of $\Delta y$ on the delver.
+We can imagine that the 3D field is thus many of these fabric sheets stacked on top of each other, that these fabric sheets are invisible to the naked eye and permeable, and that each of these fabric sheets undulates with time. A delver can freely move horizontally within these sheets without concern. When a delver descents through the sheets, each sheet the delver passes through is permanently bound to the delver's soul, without visibly reacting. The risk of being afflicted by the curse begins when the delver attempts to ascend. Each sheet below the delver that is bound to them begins to stretch upwards, as if trying to pull the delver back down. The delver does not feel anything, but they accumulate a **longing** for the deepest sheet bound to their soul. When the maximum longing $L$ is exceeded, every **per-tick** distance ascended induces a stress $\sigma$ of $\Delta y$ on the delver.
 
-$$s(y, y^-) = \min(\lceil\max(0, y - L)\rceil, 1) \cdot \max(0, y - y^-)$$
+$$\sigma(y, y^-) = \min(\lceil\max(0, y - L)\rceil, 1) \cdot \max(0, y - y^-)$$
 
-This field-induced stress causing the delver's body to manifest the strains of the current layer. Regardless of the type of strain...
+This field-induced stress causes the delver's body to manifest the strains of the current layer...
