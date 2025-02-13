@@ -113,7 +113,7 @@ As it's cumbersome to provide individual stress values when modelling, we will h
 
 $$\Sigma(t) = \int_{-\infty}^{\infty}\sigma(k)L(t-k)dk$$
 
-The distributed stress is the life force of the strain. It determines how much strain is on the delver and when that strain will affect the delver. But how this distributed stress manifests into a specific strain depends on what is called the strain's characteristic function $\mathcal{C}$. The behavior of the characteristic function will differ depending on whether the strain is in the deforming or nondeforming category. Nondeforming strain, defined as $s(\xi, x, y, z, t, \tau) = \Sigma(t) \cdot \mathcal{C}(\xi, x, y, z, t, \tau)$, is strain that results in status effects. For all nondeforming strains, given their respective configured lower and upper bounds $[a_l, b_l]$ for each layer $l$:
+The distributed stress is the life force of the strain. It determines how much strain is on the delver and when that strain will affect the delver. But how this distributed stress manifests into a specific strain depends on what is called the strain's characteristic function $\mathcal{C}(\xi, x, y, z, t, \tau)$. The behavior of the characteristic function will differ depending on whether the strain is in the deforming or nondeforming category. Nondeforming strain, defined as $s(\xi, x, y, z, t, \tau) = \Sigma(t) \cdot \mathcal{C}(\xi, x, y, z, t, \tau)$, is strain that results in status effects. For all nondeforming strains, given their respective configured lower and upper bounds $[a_l, b_l]$ for each layer $l$:
 
 $$\mathcal{C}(\xi, x, y, z, t, \tau) = P(\xi, x, y, z, t, \tau) \cdot (\frac{-y\ mod\ (-\mathcal{B}(1))}{-\mathcal{B}(1)} \cdot (b_{\mathcal{L}(y)} - a_{\mathcal{L}(y)}) + a_{\mathcal{L}(y)})$$
 
