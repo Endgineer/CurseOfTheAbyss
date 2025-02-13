@@ -83,7 +83,7 @@ Though [Scaled](https://github.com/Lyof429/Scaled) does not interact with this m
 
 # Design / Documentation / Configuration
 
-This section discusses the mathematical models and rationale behind the field to aid users in understanding how to configure the mod to their needs. But before we get ahead of ourselves, let's drive some useful functions. Let $\mathcal{A}$ represent the Abyss span. The first function we can derive is the depth gradient function $\mathcal{D}(y)$, which represents how deep into the Abyss the delver is. From this function, we can derive the layer function $\mathcal{L}(y)$ which represents the layer that the delver is at as well as the boundary function $\mathcal{B}(l)$ which represents the deepest y-value of the given layer $l$.
+This section discusses the mathematical models and rationale behind the field to aid users in understanding how to configure the mod to their needs. But before we get ahead of ourselves, let's derive some useful functions. Let $\mathcal{A}$ represent the Abyss span. The first function we can derive is the depth gradient function $\mathcal{D}(y)$, which represents how deep into the Abyss the delver is. From this function, we can derive the layer function $\mathcal{L}(y)$ which represents the layer that the delver is at as well as the boundary function $\mathcal{B}(l)$ which represents the deepest y-value of the given layer $l$.
 
 $$\mathcal{D}(y) = \min(\max(0, \frac{-y}{\mathcal{A}}), 1)$$
 
@@ -107,14 +107,16 @@ $$\sigma(y, y^-) = \min(\max(0, \lceil y - L \rceil), 1) \cdot \max(0, y - y^-)$
 
 This field-induced stress causes the delver's body to manifest the strains of the **current** layer. Before we look into analyzing the strains model, it is important to note that all strains of ascension occur gradually and exhibit a delayed onset. We call the function that models the strain sustained by the delver over time the delver's strain function $\mathcal{S}(t)$. Accumulated stress is dissipated into strain every second by simply summing a distributed version of the stress with the player's current strain function. The specific distribution function used to distribute the stress is the lognormal cumulative distribution function $L(t)$ defined as follows:
 
-$$L(t) = \int_{-\infty}^{t}\frac{1}{20(11-\frac{n}{20})\sqrt{2\pi}}e^{-\frac{\ln(11-\frac{n}{20})^2}{2}}dn$$
+$$L(t) = \int_{-\infty}^{t}\frac{1}{20(11-\frac{k}{20})\sqrt{2\pi}}e^{-\frac{\ln(11-\frac{k}{20})^2}{2}}dk$$
 
 As it's cumbersome to provide individual stress values when modelling, we will have to model the delver's stress $\sigma$ using a stress signal $\sigma(t)$ which represents the stress sustained by the player at every tick. With this, we arrive at what we call the distributed stress $\Sigma(t)$, which is simply the convolution of $L(t)$ with $\sigma(t)$.
 
-$$\Sigma(t) = \int_{-\infty}^{\infty}\sigma(n)L(t-n)dn$$
+$$\Sigma(t) = \int_{-\infty}^{\infty}\sigma(k)L(t-k)dk$$
 
 The distributed stress is the life force of the strain. It determines how much strain is on the delver and when that strain will affect the delver. But how this distributed stress manifests into a specific strain depends on what is called the strain's characteristic function $\mathcal{C}$. The behavior of the characteristic function will differ depending on whether the strain is in the deforming or nondeforming category. Nondeforming strain, denoted by $s$, is strain that results in status effects. For all nondeforming strains, given their respective configured lower and upper bounds $[a_l, b_l]$ for each layer $l$:
 
-$$\mathcal{C}(\xi, x, y, z, t, \tau) = P(\xi, x, y, z, t, \tau) * (\frac{-y\ mod\ (-\mathcal{B}(1))}{-\mathcal{B}(1)} \cdot (b_{\mathcal{L}(y)} - a_{\mathcal{L}(y)}) + a_{\mathcal{L}(y)})$$
+$$\mathcal{C}(\xi, x, y, z, t, \tau) = P(\xi, x, y, z, t, \tau) \cdot (\frac{-y\ mod\ (-\mathcal{B}(1))}{-\mathcal{B}(1)} \cdot (b_{\mathcal{L}(y)} - a_{\mathcal{L}(y)}) + a_{\mathcal{L}(y)})$$
 
-Deforming strain, denoted by $\epsilon$, is the infamous strain that occurs below the defiance layer $D$ and causes curse damage. The characteristic function for deforming strain follows the mechanics stress-strain curve closely. This means there will be two regions of deforming strain, the elastic deformation range which occurs at and above the boundary layer $B$ and plastic deformation which occurs below the boundary layer.
+Deforming strain, denoted by $\epsilon$, is the infamous strain that occurs below the defiance layer $D$ and causes curse damage. The characteristic function for deforming strain follows the mechanics stress-strain curve closely. This means there will be two regions of deforming strain, the elastic deformation range which occurs at and above the yield layer $Y$ and plastic deformation which occurs below the yield layer. The characteristic function of deforming strain is shown below, given elasticity modulus $\delta$ and strain hardening index $n$.
+
+$$\mathcal{C}(\xi, x, y, z, t, \tau) = \min(\max(0, \lfloor \mathcal{L(y)} - D \rfloor), 1) \cdot P(\xi, x, y, z, t, \tau) \cdot (\frac{\mathcal{B}(D)-y}{\delta \mathcal{A}} + (\frac{y-\mathcal{B}(D)}{\mathcal{B}(Y-D)})^\frac{1}{n})$$
