@@ -11,16 +11,17 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class Strains implements Serializable {
     private static double[] log_normal_distribution = {
-        0.00354476258391,
-        0.00517349994344,
-        0.00762534304554,
-        0.01152761051910,
-        0.01814284029300,
-        0.03023014666000,
-        0.05449568310140,
-        0.10968923895700,
-        0.25763431137900,
-        0.50193656351700
+        0.010651099117787,
+        0.014002205350036,
+        0.018788392590152,
+        0.025832766580701,
+        0.036585751693173,
+        0.053760310227836,
+        0.082828518777967,
+        0.135968607417927,
+        0.244108595562770,
+        0.499999999779401,
+        0.999999999776070,
     };
 
     private double strain_hollowing;
@@ -53,22 +54,22 @@ public class Strains implements Serializable {
 
     public Strains() {
         this.strain_hollowing = 0;
-        this.buffer_hollowing = new double[10];
+        this.buffer_hollowing = new double[11];
 
         this.strain_deformation = 0;
-        this.buffer_deformation = new double[10];
+        this.buffer_deformation = new double[11];
 
         this.strain_deprivation = 0;
-        this.buffer_deprivation = new double[10];
+        this.buffer_deprivation = new double[11];
 
         this.strain_exhaustion = 0;
-        this.buffer_exhaustion = new double[10];
+        this.buffer_exhaustion = new double[11];
 
         this.strain_hallucination = 0;
-        this.buffer_hallucination = new double[10];
+        this.buffer_hallucination = new double[11];
 
         this.strain_numbness = 0;
-        this.buffer_numbness = new double[10];
+        this.buffer_numbness = new double[11];
 
         this.stress = 0;
         this.buffer_tick = 0;
@@ -118,8 +119,8 @@ public class Strains implements Serializable {
         int buffer_second = (int) Math.ceil(this.buffer_tick / 20.0);
 
         if(this.stress_tick == 20) {
-            for(int second = 0; second < 10; second++) {
-                int buffer_step = (buffer_second + second) % 10;
+            for(int second = 0; second < 11; second++) {
+                int buffer_step = (buffer_second + second) % 11;
                 double convolved_stress = Strains.log_normal_distribution[second] * this.stress;
                 double deformation = convolved_stress * Abyss.strain_deformation(field, depth);
 
@@ -164,7 +165,7 @@ public class Strains implements Serializable {
 
         this.progress_deprivation = this.strain_deprivation > 0 ? Math.min(this.progress_deprivation + 0.05, 1) : Math.max(0, this.progress_deprivation - 0.05);
 
-        this.buffer_tick = ++this.buffer_tick % 200;
+        this.buffer_tick = ++this.buffer_tick % 220;
     }
 
     public void sync(Player player) {
@@ -172,7 +173,7 @@ public class Strains implements Serializable {
     }
 
     public boolean empty() {
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 11; i++) {
             if(this.buffer_hollowing[i] > 0) { return false; }
             if(this.buffer_deformation[i] > 0) { return false; }
             if(this.buffer_deprivation[i] > 0) { return false; }
