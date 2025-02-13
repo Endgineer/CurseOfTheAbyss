@@ -112,3 +112,9 @@ $$L(t) = \int_{-\infty}^{t}\frac{1}{20(11-\frac{n}{20})\sqrt{2\pi}}e^{-\frac{\ln
 As it's cumbersome to provide individual stress values when modelling, we will have to model the delver's stress $\sigma$ using a stress signal $\sigma(t)$ which represents the stress sustained by the player at every tick. With this, we arrive at what we call the distributed stress $\Sigma(t)$, which is simply the convolution of $L(t)$ with $\sigma(t)$.
 
 $$\Sigma(t) = \int_{-\infty}^{\infty}\sigma(n)L(t-n)dn$$
+
+The distributed stress is the life force of the strain. It determines how much strain is on the delver and when that strain will affect the delver. But how this distributed stress manifests into a specific strain depends on what is called the strain's characteristic function $\mathcal{C}$. The behavior of the characteristic function will differ depending on whether the strain is in the deforming or nondeforming category. Nondeforming strain, denoted by $s$, is strain that results in status effects. For all nondeforming strains, given their respective configured lower and upper bounds $[a_l, b_l]$ for each layer $l$:
+
+$$\mathcal{C}(\xi, x, y, z, t, \tau) = P(\xi, x, y, z, t, \tau) * (\frac{-y\ mod\ (-\mathcal{B}(1))}{-\mathcal{B}(1)} \cdot (b_{\mathcal{L}(y)} - a_{\mathcal{L}(y)}) + a_{\mathcal{L}(y)})$$
+
+Deforming strain, denoted by $\epsilon$, is the infamous strain that occurs below the defiance layer $D$ and causes curse damage. The characteristic function for deforming strain follows the mechanics stress-strain curve closely. This means there will be two regions of deforming strain, the elastic deformation range which occurs at and above the boundary layer $B$ and plastic deformation which occurs below the boundary layer.
