@@ -83,11 +83,19 @@ Though [Scaled](https://github.com/Lyof429/Scaled) does not interact with this m
 
 # Design / Documentation / Configuration
 
-This section discusses the mathematical models and rationale behind the field to aid users in understanding how to configure the mod to their needs. Inspired by the $hydrostatic\ pressure$ responsible for decompression sickness, the Abyss field was modelled as a 6D pressure field that mimics the formula of $hydrostatic\ pressure$, as shown below. There are some noteworthy differences, namely that each of the constituents are scalar fields and the Abyss' gravity field is simply 1 everywhere.
+This section discusses the mathematical models and rationale behind the field to aid users in understanding how to configure the mod to their needs. But before we get ahead of ourselves, let's drive some useful functions. Let $\mathcal{A}$ represent the Abyss span. The first function we can derive is the depth gradient function $\mathcal{D}(y)$, which represents how deep into the Abyss the delver is. From this function, we can derive the layer function $\mathcal{L}(y)$ which represents the layer that the delver is at as well as the boundary function $\mathcal{B}(l)$ which represents the deepest y-value of the given layer $l$.
+
+$$\mathcal{D}(y) = \min(\max(0, \frac{-y}{\mathcal{A}}), 1)$$
+
+$$\mathcal{L}(y) = \lceil 7 \cdot \mathcal{D}(y) \rceil$$
+
+$$\mathcal{B}(l) = l \cdot \frac{\mathcal{A}}{7}$$
+
+Now it's time to *dive* deep. Inspired by the $hydrostatic\ pressure$ responsible for decompression sickness, the Abyss field was modelled as a 6D pressure field that mimics the formula of $hydrostatic\ pressure$, as shown below. There are some noteworthy differences, namely that each of the constituents are scalar fields and the Abyss' gravity field is simply 1 everywhere.
 
 $$P(\xi, x, y, z, t, \tau) = \rho(\xi, x, y, z, t, \tau) \cdot 1 \cdot h(y)$$
 
-The $\rho(\xi, x, y, z, t, \tau)$ function is the field's density or the concentration of the field at a given 6D point. The $h(y)$ function is the field's column depth or how much field influence is above the player's head. In terms of variables, we have the world seed $\xi$, the spatial coordinates $x$, $y$ and $z$, the universal time $t$ which cannot be affected and counts the age of the world, and the astronomical time $\tau$ which is affected by the `/time` command. Let's first conceptually look at how the field causes the curse. The field itself can be simplified into a 3D scalar field; we simply take a world with seed $\xi = 0$ frozen at creation time $t = 0$ and astronomical time $\tau = 0$. Then, to help simplify the analysis, we effectively take a single 2D cross-section of the 3D scalar field by looking at a specific y-level, say $y = \frac{A}{2}$, where $A$ is the Abyss span. Finally, we generate a surface plot of this 2D scalar field, treating $P(x, z) = 0$ as valleys and $P(x, y) = 1$ as peaks. The resulting fabric will appear similar to the figure below.
+The $\rho(\xi, x, y, z, t, \tau)$ function is the field's density or the concentration of the field at a given 6D point. The $h(y)$ function is the field's column depth or how much field influence is above the player's head. In terms of variables, we have the world seed $\xi$, the spatial coordinates $x$, $y$ and $z$, the universal time $t$ which cannot be affected and counts the age of the world, and the astronomical time $\tau$ which is affected by the `/time` command. Let's first conceptually look at how the field causes the curse. The field itself can be simplified into a 3D scalar field; we simply take a world with seed $\xi = 0$ frozen at creation time $t = 0$ and astronomical time $\tau = 0$. Then, to help simplify the analysis, we effectively take a single 2D cross-section of the 3D scalar field by looking at a specific y-level, say $y = \frac{\mathcal{A}}{2}$. Finally, we generate a surface plot of this 2D scalar field, treating $P(x, z) = 0$ as valleys and $P(x, y) = 1$ as peaks. The resulting fabric will appear similar to the figure below.
 
 <p align="center">
   <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/.vscode/fabric.jpg?raw=true" height="50%" width="50%">
@@ -97,10 +105,10 @@ We can imagine that the 3D field is thus many of these fabric sheets stacked on 
 
 $$\sigma(y, y^-) = \min(\lceil\max(0, y - L)\rceil, 1) \cdot \max(0, y - y^-)$$
 
-This field-induced stress causes the delver's body to manifest the strains of the **current** layer. Before we look into analyzing the strains model, it is important to note that all strains of ascension occur gradually and exhibit a delayed onset. We call the function that models the strain sustained by the delver over time the delver's **strain function** $\mathcal{S}(t)$. Accumulated stress is dissipated into strain every second by simply summing a distributed version of the stress with the player's current strain function. The specific distribution function used to distribute the stress is the lognormal cumulative distribution function $\mathcal{L}(t)$ defined as follows:
+This field-induced stress causes the delver's body to manifest the strains of the **current** layer. Before we look into analyzing the strains model, it is important to note that all strains of ascension occur gradually and exhibit a delayed onset. We call the function that models the strain sustained by the delver over time the delver's strain function $\mathcal{S}(t)$. Accumulated stress is dissipated into strain every second by simply summing a distributed version of the stress with the player's current strain function. The specific distribution function used to distribute the stress is the lognormal cumulative distribution function $L(t)$ defined as follows:
 
-$$\mathcal{L}(t) = \int_{-\infty}^{t}\frac{1}{20(11-\frac{n}{20})\sqrt{2\pi}}e^{-\frac{\ln(11-\frac{n}{20})^2}{2}}dn$$
+$$L(t) = \int_{-\infty}^{t}\frac{1}{20(11-\frac{n}{20})\sqrt{2\pi}}e^{-\frac{\ln(11-\frac{n}{20})^2}{2}}dn$$
 
-As it's cumbersome to provide individual stress values when modelling, we will have to model the delver's stress $\sigma$ using a stress signal $\sigma(t)$ which represents the stress sustained by the player at every tick. With this, we arrive at what we call the distributed stress $\Sigma(t)$, which is simply the convolution of $\mathcal{L}(t)$ with $\sigma(t)$.
+As it's cumbersome to provide individual stress values when modelling, we will have to model the delver's stress $\sigma$ using a stress signal $\sigma(t)$ which represents the stress sustained by the player at every tick. With this, we arrive at what we call the distributed stress $\Sigma(t)$, which is simply the convolution of $L(t)$ with $\sigma(t)$.
 
-$$\Sigma(t) = \int_{-\infty}^{\infty}\sigma(n)\mathcal{L}(t-n)dn$$
+$$\Sigma(t) = \int_{-\infty}^{\infty}\sigma(n)L(t-n)dn$$
