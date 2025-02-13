@@ -97,4 +97,10 @@ We can imagine that the 3D field is thus many of these fabric sheets stacked on 
 
 $$\sigma(y, y^-) = \min(\lceil\max(0, y - L)\rceil, 1) \cdot \max(0, y - y^-)$$
 
-This field-induced stress causes the delver's body to manifest the strains of the current layer...
+This field-induced stress causes the delver's body to manifest the strains of the **current** layer. Before we look into analyzing the strains model, it is important to note that all strains of ascension occur gradually and exhibit a delayed onset. We call the function that models the strain sustained by the delver over time the delver's **strain function** $\mathcal{S}(t)$. Accumulated stress is dissipated into strain every second by simply summing a distributed version of the stress with the player's current strain function. The specific distribution function used to distribute the stress is the lognormal cumulative distribution function $\mathcal{L}(t)$ defined as follows:
+
+$$\mathcal{L}(t) = \int_{-\infty}^{t}\frac{1}{20(11-\frac{n}{20})\sqrt{2\pi}}e^{-\frac{\ln(11-\frac{n}{20})^2}{2}}dn$$
+
+As it's cumbersome to provide individual stress values when modelling, we will have to model the delver's stress $\sigma$ using a stress signal $\sigma(t)$ which represents the stress sustained by the player at every tick. With this, we arrive at what we call the distributed stress $\Sigma(t)$, which is simply the convolution of $\mathcal{L}(t)$ with $\sigma(t)$.
+
+$$\Sigma(t) = \int_{-\infty}^{\infty}\sigma(n)\mathcal{L}(t-n)dn$$
