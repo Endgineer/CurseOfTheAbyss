@@ -121,4 +121,16 @@ Deforming strain, defined as $\epsilon(\xi, x, y, z, t, \tau) = \Sigma(t) \cdot 
 
 $$\mathcal{C}(\xi, x, y, z, t, \tau) = \min(\max(0, \lfloor \mathcal{L(y)} - D \rfloor), 1) \cdot P(\xi, x, y, z, t, \tau) \cdot (\frac{\mathcal{B}(D)-y}{\delta \mathcal{A}} + (\frac{y-\mathcal{B}(D)}{\mathcal{B}(Y-D)})^\frac{1}{n})$$
 
-These models for strain should be used to guide experimentation, since they suffice to simulate and understand how strain works ideally, not how the game actually calculates it. In reality, the calculations will involve an element of stochasticity, approximations, numerical errors, and discrete intervals. But with strain demystified, the field remains a blackbox.
+These models for strain should be used to guide experimentation, since they suffice to simulate and understand how strain works ideally, not how the game actually calculates it. In reality, the calculations will involve an element of stochasticity and numerical errors due to approximations and discreteness. With strain demystified, let's finally go back to the field's constituent functions, starting with the field density function:
+
+$$\rho(\xi, x, y, z, t, \tau) = \min(\mathcal{D}(y) + \Xi(\xi, x, y, z, t, \tau) \cdot \frac{1-\mathcal{D}(y)}{1+\frac{63(1-\Psi(\tau))}{64}}, 1)$$
+
+It might look scary, but it's not. The outer-most function ensures the field saturates at 1. The $\Xi(\xi, x, y, z, t, \tau)$ function is a multioctave noise function, shown below. This is the function is at the core of the field, responsible for the field's distinctive shape. We divide this function by a term which utilizes the moon presence function $\Psi(\tau)$, ensuring that the field exhibits its hottest nature during midnight on a full moon and its coldest nature during noon on a new moon. Finally, the $\mathcal{D}(y)$ and $1-\mathcal{D}(y)$ portions superimpose the field onto a minimum background gradient, ensuring that holes in the field are covered.
+
+$$\Xi(\xi, x, y, z, t, \tau) = \sum_{\Omega\ =\ 0}^{6}\frac{|\mathcal{O}_{3D}(\xi, \frac{x}{T_{xz}2^\Omega}, \frac{y}{T_y2^\Omega} - \frac{t}{T_t}, \frac{z}{T_{xz}2^\Omega})|}{2^{6-\Omega}}$$
+
+$$\Psi(\tau) = 2 |\frac{\tau - 114000}{192000} - \lfloor \frac{\tau - 18000}{192000} \rfloor| \cdot \max(0, \frac{48}{11} \cdot |\frac{\tau - 6000}{24000} - \lfloor \frac{\tau + 6000}{24000} \rfloor| - \frac{13}{11})$$
+
+This leaves only the column depth function $\phi(y)$, which is defined below. It is essentially a sigmoid activation function that attempts to mimic the apparent field influence seen in Made in Abyss. In terms of future work, if field voids are implemented, they will be achieved as part of the field's gravity function, which is currently defined to be 1 everywhere.
+
+$$\phi(y) = \frac{1}{1 + e^{\frac{\ln 99}{\frac{512}{\mathcal{A}} + \frac{64}{7}} \cdot (\frac{64y}{\mathcal{A}}+\frac{64}{7})}}$$
