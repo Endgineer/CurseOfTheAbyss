@@ -129,7 +129,7 @@ public class CurseCapability implements Serializable {
         
         this.log = new JsonObject();
         this.log.addProperty("seed", player.getServer().getLevel(player.getCommandSenderWorld().dimension()).getSeed());
-        this.log.addProperty("player", player.getName().getString().replace("\"", ""));
+        this.log.addProperty("player", player.getName().getString());
         this.log.addProperty("time", player.getCommandSenderWorld().getGameTime());
         this.log.add("data", new JsonArray());
 
@@ -141,7 +141,7 @@ public class CurseCapability implements Serializable {
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
-        File json_file = new File(FMLPaths.GAMEDIR.get().toFile(), "abyss_log/" + this.log.get("seed").toString() + "_" + this.log.get("player").toString() + "_" + this.log.get("time").toString() + ".json");
+        File json_file = new File(FMLPaths.GAMEDIR.get().toFile(), "abyss_log/" + String.valueOf(this.log.get("seed").getAsLong()) + "_" + this.log.get("player").getAsString() + "_" + String.valueOf(this.log.get("time").getAsLong()) + ".json");
         if(!json_file.getParentFile().exists()) json_file.getParentFile().mkdir();
 
         try(FileWriter writer = new FileWriter(json_file)) {
