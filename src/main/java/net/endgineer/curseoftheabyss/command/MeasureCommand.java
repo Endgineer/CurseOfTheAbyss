@@ -17,8 +17,8 @@ public class MeasureCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("abyss").requires(stack -> { return stack.hasPermission(2); })
             .then(Commands.literal("measure")
-                .then(Commands.literal("start").then(Commands.argument("player", EntityArgument.player())).executes(stack -> measureStart(stack)))
-                .then(Commands.literal("stop").then(Commands.argument("player", EntityArgument.player())).executes(stack -> measureStop(stack)))
+                .then(Commands.literal("start").then(Commands.argument("player", EntityArgument.player()).executes(stack -> measureStart(stack))))
+                .then(Commands.literal("stop").then(Commands.argument("player", EntityArgument.player()).executes(stack -> measureStop(stack))))
             )
         );
     }
