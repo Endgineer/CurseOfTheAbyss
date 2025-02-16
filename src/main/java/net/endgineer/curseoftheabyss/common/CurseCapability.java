@@ -7,7 +7,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
+
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -126,7 +129,7 @@ public class CurseCapability implements Serializable {
         
         this.log = new JsonObject();
         this.log.addProperty("seed", player.getServer().getLevel(player.getCommandSenderWorld().dimension()).getSeed());
-        this.log.addProperty("player", player.getName().getString());
+        this.log.addProperty("player", player.getName().getString().replace("\"", ""));
         this.log.addProperty("time", player.getCommandSenderWorld().getGameTime());
         this.log.add("data", new JsonArray());
 
@@ -144,7 +147,10 @@ public class CurseCapability implements Serializable {
         try(FileWriter writer = new FileWriter(json_file)) {
             gson.toJson(this.log, writer);
         } catch(IOException e) {
-            e.printStackTrace();
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            System.out.println(sw.toString());
         }
         
         this.log = null;
