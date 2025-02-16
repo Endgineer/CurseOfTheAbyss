@@ -91,11 +91,6 @@ public class CurseCapability implements Serializable {
 
         this.strains.tick(stress, current_depth, field);
 
-        this.constitution = Math.max(0, this.constitution - this.strains.observeHollowing(true));
-
-        sync(player, field);
-        this.strains.sync(player);
-
         if(this.log != null) {
             JsonObject data = new JsonObject();
             data.addProperty("x", x);
@@ -113,6 +108,11 @@ public class CurseCapability implements Serializable {
             data.addProperty("S6", this.strains.observeHollowing(false));
             this.log.get("data").getAsJsonArray().add(data);
         }
+
+        this.constitution = Math.max(0, this.constitution - this.strains.observeHollowing(true));
+
+        sync(player, field);
+        this.strains.sync(player);
     }
 
     public void sync(Player player, double field) {
