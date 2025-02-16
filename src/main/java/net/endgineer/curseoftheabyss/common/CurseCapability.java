@@ -65,7 +65,9 @@ public class CurseCapability implements Serializable {
         Level level = player.getCommandSenderWorld();
         boolean overworld = level.dimension().location().getPath() == "overworld";
         
-        double field = overworld ? Abyss.field(level.getServer().getLevel(level.dimension()).getSeed(), x, y, z, level.getGameTime(), level.getDayTime()) : 0;
+        long gt = level.getGameTime();
+        long dt = level.getDayTime();
+        double field = overworld ? Abyss.field(level.getServer().getLevel(level.dimension()).getSeed(), x, y, z, gt, dt) : 0;
         
         double current_depth = Math.min(y, 0);
 
@@ -95,6 +97,19 @@ public class CurseCapability implements Serializable {
 
         if(this.log != null) {
             JsonObject data = new JsonObject();
+            data.addProperty("x", x);
+            data.addProperty("y", y);
+            data.addProperty("z", z);
+            data.addProperty("gt", gt);
+            data.addProperty("dt", dt);
+            data.addProperty("f", field);
+            data.addProperty("s", stress);
+            data.addProperty("S1", this.strains.observeExhaustion(false));
+            data.addProperty("S2", this.strains.observeNumbness(false));
+            data.addProperty("S3", this.strains.observeHallucination(false));
+            data.addProperty("S4", this.strains.observeDeformation(false));
+            data.addProperty("S5", this.strains.observeDeprivation(false));
+            data.addProperty("S6", this.strains.observeHollowing(false));
             this.log.get("data").getAsJsonArray().add(data);
         }
     }
