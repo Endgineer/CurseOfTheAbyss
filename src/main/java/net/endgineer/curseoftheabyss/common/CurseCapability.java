@@ -2,12 +2,15 @@ package net.endgineer.curseoftheabyss.common;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraft.server.level.ServerPlayer;
 import net.endgineer.curseoftheabyss.core.ModVariables;
@@ -15,12 +18,18 @@ import net.endgineer.curseoftheabyss.network.CursePacket;
 import net.endgineer.curseoftheabyss.network.PacketHandler;
 import net.minecraft.nbt.CompoundTag;
 
+import com.google.gson.JsonObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+
 public class CurseCapability implements Serializable {
     private double lowest_depth;
     private double previous_depth;
     private double derangement;
     private double constitution;
     private Strains strains;
+    private JsonObject log;
 
     public CurseCapability() {
         this.reset();
@@ -42,6 +51,7 @@ public class CurseCapability implements Serializable {
         this.derangement = 0;
         this.constitution = 0;
         this.strains = new Strains();
+        this.log = null;
     }
 
     public void tick(Player player) {
@@ -79,6 +89,11 @@ public class CurseCapability implements Serializable {
 
         sync(player, field);
         this.strains.sync(player);
+
+        if(this.log != null) {
+            JsonObject data = new JsonObject();
+            this.log.get("data").getAsJsonArray().add(data);
+        }
     }
 
     public void sync(Player player, double field) {
@@ -104,5 +119,35 @@ public class CurseCapability implements Serializable {
             this.strains = curse.strains;
             this.constitution = curse.constitution;
         } catch(IOException | ClassNotFoundException exception) { System.out.println(exception); }
+    }
+
+    public boolean startMeasuring(ServerPlayer player) {
+        if(this.log != null) return false;
+        
+        this.log = new JsonObject();
+        this.log.addProperty("seed", player.getServer().getLevel(player.getCommandSenderWorld().dimension()).getSeed());
+        this.log.addProperty("player", player.getName().getString());
+        this.log.addProperty("time", player.getCommandSenderWorld().getGameTime());
+        this.log.add("data", new JsonArray());
+
+        return true;
+    }
+
+    public boolean stopMeasuring(ServerPlayer player) {
+        if(this.log == null) return false;
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        File json_file = new File(FMLPaths.GAMEDIR.get().toFile(), "abyss_log/" + this.log.get("seed").toString() + "_" + this.log.get("player").toString() + "_" + this.log.get("time").toString() + ".json");
+        if(!json_file.getParentFile().exists()) json_file.getParentFile().mkdir();
+
+        try(FileWriter writer = new FileWriter(json_file)) {
+            gson.toJson(this.log, writer);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        
+        this.log = null;
+        return true;
     }
 }

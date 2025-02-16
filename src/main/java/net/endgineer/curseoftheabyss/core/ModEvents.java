@@ -7,7 +7,7 @@ import croissantnova.sanitydim.capability.SanityProvider;
 import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
 import net.endgineer.curseoftheabyss.CurseOfTheAbyss;
 import net.endgineer.curseoftheabyss.client.StrainsData;
-import net.endgineer.curseoftheabyss.command.RecordCommand;
+import net.endgineer.curseoftheabyss.command.MeasureCommand;
 import net.endgineer.curseoftheabyss.common.Abyss;
 import net.endgineer.curseoftheabyss.common.CurseCapability;
 import net.endgineer.curseoftheabyss.common.CurseProvider;
@@ -67,7 +67,7 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
-        RecordCommand.register(event.getDispatcher());
+        MeasureCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent

@@ -1,9 +1,11 @@
 {
     "item.curseoftheabyss.star_compass": "Star Compass",
     "tooltip.curseoftheabyss.abyss_relic": "Relic of the Abyss",
-    "commands.curseoftheabyss.record.start": "Started recording the player's parameters...",
-    "commands.curseoftheabyss.record.stop": "Stopped recording the player's parameters...",
-    "commands.curseoftheabyss.failed.console": "This command can only be executed by a player.",
+    "commands.curseoftheabyss.all.failure.player_dne": "No player by that name was found currently on the server.",
+    "commands.curseoftheabyss.measure.start.success": "Started measuring %1$s's parameters...",
+    "commands.curseoftheabyss.measure.start.failure": "Failed to start measuring %1$s's parameters: Measuring has already started.",
+    "commands.curseoftheabyss.measure.stop.success": "Stopped measuring %1$s's parameters...",
+    "commands.curseoftheabyss.measure.stop.failure": "Failed to stop measuring %1$s's parameters: Measuring has already stopped.",
     "death.attack.curseoftheabyss_cursed": "%1$s succumbed to the strains of ascension.",
     "death.attack.curseoftheabyss_cursed.player": "%1$s succumbed to the strains of ascension while fighting %2$s."
 }
