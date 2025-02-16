@@ -47,7 +47,7 @@ public class BlurHandler extends VisualHandler {
 
         double saturation = 0;
         Minecraft mc = Minecraft.getInstance();
-        if(player != null && player.isAlive() && !mc.isPaused()) {
+        if(player != null && player.isAlive() && !mc.isPaused() && !player.isCreative() && !player.isSpectator()) {
             saturation = StrainsData.getNumbnessProgress() * intensity;
 
             if(focusVisual.getOpacityInternal() < saturation) {

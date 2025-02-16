@@ -198,11 +198,15 @@ public class ModEvents {
         
         VisualManager.onTick(mc.player);
         
-        mc.getProfiler().push("visual_deprivation");
-        float opacity = (float) StrainsData.getDeprivationProgress();
-        int color = (int) (opacity * 255) << 24;
-        event.getGuiGraphics().fill(RenderType.guiOverlay(), 0, 0, event.getWindow().getScreenWidth(), event.getWindow().getScreenHeight(), color);
-        mc.getProfiler().pop();
+        boolean playmode = !mc.player.isCreative() && !mc.player.isSpectator();
+        
+        if(playmode) {
+            mc.getProfiler().push("visual_deprivation");
+            float opacity = (float) StrainsData.getDeprivationProgress();
+            int color = (int) (opacity * 255) << 24;
+            event.getGuiGraphics().fill(RenderType.guiOverlay(), 0, 0, event.getWindow().getScreenWidth(), event.getWindow().getScreenHeight(), color);
+            mc.getProfiler().pop();
+        }
         
         SoundManager manager = mc.getSoundManager();
         SoundEngine engine = ((SoundManagerAccessor) manager).getSoundEngine();
@@ -210,7 +214,7 @@ public class ModEvents {
         sounds.forEach((p_217926_1_, p_217926_2_) -> {
             float f = ((SoundEngineAccessor) engine).invokeCalculateVolume(p_217926_1_);
             p_217926_2_.execute((p_217923_1_) -> {
-                p_217923_1_.setVolume((float) (mc.isPaused() ? f : f*(1-StrainsData.getDeprivationProgress())));
+                p_217923_1_.setVolume((float) (mc.isPaused() || !playmode ? f : f*(1-StrainsData.getDeprivationProgress())));
             });
         });
     }

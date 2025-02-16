@@ -45,7 +45,7 @@ public class EVRenderer {
             reloadResources = false;
         }
         
-        if(!(mc.screen instanceof DeathScreen) && mc.level != null) {
+        if(!(mc.screen instanceof DeathScreen) && mc.level != null && !mc.player.isCreative() && !mc.player.isSpectator()) {
             float partialTicks = Minecraft.getInstance().getFrameTime();
             
             if(mc.getMainRenderTarget().width != framebufferWidth || mc.getMainRenderTarget().height != framebufferHeight) {
