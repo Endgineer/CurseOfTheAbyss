@@ -7,6 +7,7 @@ import croissantnova.sanitydim.capability.SanityProvider;
 import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
 import net.endgineer.curseoftheabyss.CurseOfTheAbyss;
 import net.endgineer.curseoftheabyss.client.StrainsData;
+import net.endgineer.curseoftheabyss.command.RecordCommand;
 import net.endgineer.curseoftheabyss.common.Abyss;
 import net.endgineer.curseoftheabyss.common.CurseCapability;
 import net.endgineer.curseoftheabyss.common.CurseProvider;
@@ -33,6 +34,7 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.RenderTickEvent;
@@ -61,6 +63,11 @@ public class ModEvents {
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(CurseCapability.class);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCommands(RegisterCommandsEvent event) {
+        RecordCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent

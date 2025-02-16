@@ -1,6 +1,9 @@
 {
     "item.curseoftheabyss.star_compass": "Star Compass",
     "tooltip.curseoftheabyss.abyss_relic": "Relic of the Abyss",
+    "commands.curseoftheabyss.record.start": "Started recording the player's parameters...",
+    "commands.curseoftheabyss.record.stop": "Stopped recording the player's parameters...",
+    "commands.curseoftheabyss.failed.console": "This command can only be executed by a player.",
     "death.attack.curseoftheabyss_cursed": "%1$s succumbed to the strains of ascension.",
     "death.attack.curseoftheabyss_cursed.player": "%1$s succumbed to the strains of ascension while fighting %2$s."
 }
