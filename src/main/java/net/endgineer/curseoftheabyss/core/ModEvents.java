@@ -76,6 +76,8 @@ public class ModEvents {
             event.player.getCapability(CurseProvider.CURSE).ifPresent(curse -> {
                 curse.tick(event.player);
 
+                curse.getStrains().observeHollowing(true);
+                
                 if(ModList.get().isLoaded("thirst")) {
                     event.player.getCapability(ModCapabilities.PLAYER_THIRST).ifPresent(thirst -> {
                         thirst.addExhaustion(event.player, (float) curse.getStrains().observeExhaustion(false) / 5.0F);
