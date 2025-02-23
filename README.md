@@ -105,23 +105,21 @@ We can imagine that the 3D field is thus many of these fabric sheets stacked on 
 
 $$\sigma(y, y^-) = \min(\max(0, \lceil y - L \rceil), 1) \cdot \max(0, y - y^-)$$
 
-This field-induced stress causes the delver's body to manifest the strains of the **current** layer. Before we look into analyzing the strains model, it is important to note that all strains of ascension occur gradually and exhibit a delayed onset. We call the function that models the strain sustained by the delver over time the delver's strain function $\mathcal{S}(t)$. Accumulated stress is dissipated into strain every second by simply summing a distributed version of the stress with the player's current strain function. The specific distribution function used to distribute the stress is the lognormal cumulative distribution function $L(t)$ defined as follows:
+This field-induced stress dissipates onto the delver's body in the form of strain, which occurs gradually and typically with a delayed onset. Mathematically speaking, each stress sustained during a tick is an impulse. This impulse is distributed into **per-second** strain using a strain kernel $K(t)$. If we generalize the delver's stress history into a stress signal $\sigma(t)$, we arrive at the general strain $\Sigma(t)$, which is simply the convolution of $\sigma(t)$ with $K(t)$.
 
-$$L(t) = \int_{-\infty}^{t}\frac{1}{20(11-\frac{k}{20})\sqrt{2\pi}}e^{-\frac{\ln(11-\frac{k}{20})^2}{2}}dk$$
+$$\Sigma(t) = \int_{-\infty}^{\infty}\sigma(m)K(t-m)dm$$
 
-As it's cumbersome to provide individual stress values when modelling, we will have to model the delver's stress $\sigma$ using a stress signal $\sigma(t)$ which represents the stress sustained by the player at every tick. With this, we arrive at what we call the distributed stress $\Sigma(t)$, which is simply the convolution of $L(t)$ with $\sigma(t)$.
+The strain kernel is defined by the user in the mod's configuration file, depending on how they view the strain distribution to work, with the only conditions being the following:
 
-$$\Sigma(t) = \int_{-\infty}^{\infty}\sigma(k)L(t-k)dk$$
+$$\int_{0}^{\infty}K(t)dt = 1$$
 
-The distributed stress is the life force of the strain. It determines how much strain is on the delver and when that strain will affect the delver. But how this distributed stress manifests into a specific strain depends on what is called the strain's characteristic function $\mathcal{C}(\xi, x, y, z, t, \tau)$. The behavior of the characteristic function will differ depending on whether the strain is in the deforming or nondeforming category. Nondeforming strain, defined as $s(\xi, x, y, z, t, \tau) = \Sigma(t) \cdot \mathcal{C}(\xi, x, y, z, t, \tau)$, is strain that results in status effects. For all nondeforming strains, given their respective configured lower and upper bounds $[a_l, b_l]$ for each layer $l$:
+$$K(t) \geq 0\ for\ t\geq0$$
 
-$$\mathcal{C}(\xi, x, y, z, t, \tau) = P(\xi, x, y, z, t, \tau) \cdot (\frac{-y\ mod\ (-\mathcal{B}(1))}{-\mathcal{B}(1)} \cdot (b_{\mathcal{L}(y)} - a_{\mathcal{L}(y)}) + a_{\mathcal{L}(y)})$$
+The general strain manifests as the different strains of ascension, depending on the **current layer** that the delver is attempting to defy. The specific strain $S_L(t)$ pertaining to a layer $L$ is obtained by convolving the general strain $\Sigma(t)$ with the strain filter $F_L(t)$ of the specific strain.
 
-Deforming strain, defined as $\epsilon(\xi, x, y, z, t, \tau) = \Sigma(t) \cdot \mathcal{C}(\xi, x, y, z, t, \tau)$, is the infamous strain that occurs below the defiance layer $D$ and causes curse damage. The characteristic function for deforming strain follows the mechanics stress-strain curve closely. This means there will be two regions of deforming strain, the elastic deformation range which occurs at and above the yield layer $Y$ and plastic deformation which occurs below the yield layer. The characteristic function of deforming strain is shown below, given elasticity modulus $\delta$ and strain hardening index $n$.
+$$S_L(t) = \int_{-\infty}^{\infty}\Sigma(m)F_L(t-m)dm$$
 
-$$\mathcal{C}(\xi, x, y, z, t, \tau) = \min(\max(0, \lfloor \mathcal{L(y)} - D \rfloor), 1) \cdot P(\xi, x, y, z, t, \tau) \cdot (\frac{\mathcal{B}(D)-y}{\delta \mathcal{A}} + (\frac{y-\mathcal{B}(D)}{\mathcal{B}(Y-D)})^\frac{1}{n})$$
-
-These models for strain should be used to guide experimentation, since they suffice to simulate and understand how strain works ideally, not how the game actually calculates it. In reality, the calculations will involve an element of stochasticity and numerical errors due to approximations and discreteness. With strain demystified, let's finally go back to the field's constituent functions, starting with the field density function:
+The strain filter is also defined by the user in the mod's configuration file, except that there are no conditions here and the user can vary the behavior of the strain filter with variables such as the delver's current depth and the field's strength at the delver's location. The specific strain $S_L(t)$ models the actual strains of the $Lth$ layer sustained by the delver per-second given their current state. These models for strain should be used to guide experimentation, since they suffice to simulate and understand how strain works ideally, not how the game actually calculates it. In reality, the calculations will involve an element of stochasticity due to translations made by the game and numerical errors due to approximations. With strain demystified, let's finally go back to the field's constituent functions, starting with the field density function:
 
 $$\rho(\xi, x, y, z, t, \tau) = \min(\mathcal{D}(y) + \Xi(\xi, x, y, z, t, \tau) \cdot \frac{1-\mathcal{D}(y)}{1+\frac{63(1-\Psi(\tau))}{64}}, 1)$$
 
