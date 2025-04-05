@@ -23,6 +23,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
@@ -39,6 +40,9 @@ public class CurseOfTheAbyss {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.register(modEventBus);
+        if(!FMLEnvironment.dist.isDedicatedServer()) {
+            ModOverlays.register(modEventBus);
+        }
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::enqueueIMC);
@@ -59,6 +63,9 @@ public class CurseOfTheAbyss {
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             PacketHandler.init();
+            if(!FMLEnvironment.dist.isDedicatedServer()) {
+                CurseOfTheAbyssShaders.load();
+            }
         });
     }
 
@@ -74,14 +81,6 @@ public class CurseOfTheAbyss {
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-            
-            ModOverlays.register(modEventBus);
-            
-            event.enqueueWork(() -> {
-                CurseOfTheAbyssShaders.load();
-            });
-        }
+        public static void onClientSetup(FMLClientSetupEvent event) {}
     }
 }
