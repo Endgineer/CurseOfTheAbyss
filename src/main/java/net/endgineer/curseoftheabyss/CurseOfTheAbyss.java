@@ -39,7 +39,6 @@ public class CurseOfTheAbyss {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.register(modEventBus);
-        ModOverlays.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::enqueueIMC);
@@ -60,7 +59,6 @@ public class CurseOfTheAbyss {
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             PacketHandler.init();
-            CurseOfTheAbyssShaders.load();
         });
     }
 
@@ -76,6 +74,14 @@ public class CurseOfTheAbyss {
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {}
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+            
+            ModOverlays.register(modEventBus);
+            
+            event.enqueueWork(() -> {
+                CurseOfTheAbyssShaders.load();
+            });
+        }
     }
 }
