@@ -94,13 +94,13 @@ public class Abyss {
         return 1-integrity;
     }
 
-    private static double moon_presence(long daytime) {
+    public static double moon_presence(long daytime) {
         double moon_brightness = Math.max(0, ModVariables.FIELD.MOON_BRIGHTNESS_GAIN * Math.abs((daytime - 6000) * ModVariables.FIELD.TICK_IN_DAYS - Math.floor((daytime + 6000) * ModVariables.FIELD.TICK_IN_DAYS)) + ModVariables.FIELD.MOON_BRIGHTNESS_BIAS);
         double moon_phase = 2 * Math.abs((daytime - 114000) * ModVariables.FIELD.TICK_IN_MONTHS - Math.floor((daytime - 18000) * ModVariables.FIELD.TICK_IN_MONTHS));
         return moon_brightness * moon_phase;
     }
 
-    private static double column_depth(double y) {
+    public static double column_depth(double y) {
         return 1.0D / (1.0D + Math.exp(ModVariables.FIELD.DEPTH_SIGMOID_TEMPERATURE * (64 * y * ModVariables.ABYSS.INVERSE_SPAN + ModVariables.FIELD.DEPTH_SIGMOID_BIAS)));
     }
 
