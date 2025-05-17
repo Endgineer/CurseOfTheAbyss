@@ -24,6 +24,8 @@ public class FieldVariables {
 
     public final double HARMONIC_MAXFIELD = 63.0D / 64.0D;
 
+    public final double EXPECTED_FIELD = 0.522556 / (1 + HARMONIC_MAXFIELD * 425.0/480.0);
+    
     public final double[] XZ_FREQUENCIES = {
         1.0D / (ModConfigs.ABYSS.FIELD.XZ_PERIOD.get() * Math.pow(2, 0)),
         1.0D / (ModConfigs.ABYSS.FIELD.XZ_PERIOD.get() * Math.pow(2, 1)),

@@ -105,10 +105,8 @@ public class Abyss {
     }
 
     public static double expected_field(double y) {
-        final double moon_absence = 425.0/480.0;
-        final double field = 0.522556 / (1 + ModVariables.FIELD.HARMONIC_MAXFIELD * moon_absence);
         final double background_gradient = Abyss.pressure(y);
-        final double field_density = Math.min(background_gradient + field * (1 - background_gradient), 1);
+        final double field_density = Math.min(background_gradient + ModVariables.FIELD.EXPECTED_FIELD * (1 - background_gradient), 1);
         final double field_column = Abyss.column_depth(y);
         
         return field_density * field_column;
