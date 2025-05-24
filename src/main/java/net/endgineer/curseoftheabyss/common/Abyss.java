@@ -17,7 +17,7 @@ public class Abyss {
         return (int) Math.ceil(7 * Abyss.pressure(y));
     }
 
-    private static double pressure(double y) {
+    public static double pressure(double y) {
         return Math.min(Math.max(0, -y * ModVariables.ABYSS.INVERSE_SPAN), 1);
     }
 
