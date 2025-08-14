@@ -72,7 +72,7 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if(event.side == LogicalSide.SERVER && event.phase.equals(TickEvent.Phase.END) && ((ServerPlayer) event.player).gameMode.isSurvival()) {
+        if(event.side == LogicalSide.SERVER && event.phase.equals(TickEvent.Phase.END)) {
             event.player.getCapability(CurseProvider.CURSE).ifPresent(curse -> {
                 curse.tick(event.player);
 
