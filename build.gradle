@@ -186,6 +186,10 @@ dependencies {
     implementation fg.deobf("curse.maven:sanity-descent-into-madness-876448:4625236")
 
     implementation fg.deobf("curse.maven:thirst-was-taken-679270:6110320")
+
+    implementation fg.deobf("curse.maven:attributefix-280510:4911084")
+    
+    runtimeOnly(fg.deobf("curse.maven:jade-324717:6855440"))
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

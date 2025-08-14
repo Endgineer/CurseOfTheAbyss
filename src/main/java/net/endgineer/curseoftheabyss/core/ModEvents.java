@@ -26,8 +26,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -38,6 +42,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.RenderTickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -217,5 +222,36 @@ public class ModEvents {
                 p_217923_1_.setVolume((float) (mc.isPaused() || !playmode ? f : f*(1-StrainsData.getDeprivationProgress())));
             });
         });
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoinLevelEvent(EntityJoinLevelEvent event) {
+        Entity entity = event.getEntity();
+        Level level = event.getLevel();
+
+        if(level.isClientSide || entity == null || entity instanceof Player || !level.dimension().location().getPath().equals("overworld")) return;
+        
+        if(entity instanceof LivingEntity livingEntity) {
+            AttributeInstance health = livingEntity.getAttribute(Attributes.MAX_HEALTH);
+            AttributeInstance damage = livingEntity.getAttribute(Attributes.ATTACK_DAMAGE);
+            AttributeInstance armor = livingEntity.getAttribute(Attributes.ARMOR);
+
+            double x = livingEntity.getX(), y = livingEntity.getY(), z = livingEntity.getZ();
+            long gt = level.getGameTime(), dt = level.getDayTime();
+            double field = Abyss.field(level.getServer().getLevel(level.dimension()).getSeed(), x, y, z, gt, dt);
+            
+            if(health != null) {
+                health.setBaseValue(health.getBaseValue() * (1.0 + field));
+                livingEntity.setHealth(livingEntity.getMaxHealth());
+            }
+            
+            if(damage != null) {
+                damage.setBaseValue(damage.getBaseValue() * (1.0 + field));
+            }
+            
+            if(armor != null) {
+                armor.setBaseValue(armor.getBaseValue() * (1.0 + field));
+            }
+        }
     }
 }
