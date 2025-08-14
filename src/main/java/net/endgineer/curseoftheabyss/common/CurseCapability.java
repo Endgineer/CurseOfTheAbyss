@@ -64,7 +64,7 @@ public class CurseCapability implements Serializable {
         double x = player.getX(), y = player.getY(), z = player.getZ();
 
         Level level = player.getCommandSenderWorld();
-        boolean overworld = level.dimension().location().getPath() == "overworld";
+        boolean overworld = level.dimension().location().getPath().equals("overworld");
         
         long gt = level.getGameTime();
         long dt = level.getDayTime();

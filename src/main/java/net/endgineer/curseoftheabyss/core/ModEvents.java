@@ -110,7 +110,7 @@ public class ModEvents {
         if(livingEntity instanceof Player) {
             Player player = ((Player) livingEntity);
             
-            if(player.level().dimension().location().getPath() == "overworld" && Abyss.layer(player.getY()) > ModConfigs.CUSTOM.FINALITY.LAYER.get()) {
+            if(player.level().dimension().location().getPath().equals("overworld") && Abyss.layer(player.getY()) > ModConfigs.CUSTOM.FINALITY.LAYER.get()) {
                 player.getInventory().clearContent();
                 
                 if(ModList.get().isLoaded("curios")) {
@@ -145,7 +145,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onServerChatEvent(ServerChatEvent event) {
         event.getPlayer().getCapability(CurseProvider.CURSE).ifPresent(curse -> {
-            event.setMessage(Component.translatable((event.getPlayer().level().dimension().location().getPath() == "overworld" ? event.getPlayer().getY() : 0)+":"+curse.getDerangement()+":"+event.getUsername()+":"+event.getMessage().getString()));
+            event.setMessage(Component.translatable((event.getPlayer().level().dimension().location().getPath().equals("overworld") ? event.getPlayer().getY() : 0)+":"+curse.getDerangement()+":"+event.getUsername()+":"+event.getMessage().getString()));
         });
     }
 
@@ -161,7 +161,7 @@ public class ModEvents {
         String[] constituents = message.split(":", 4);
         if(constituents.length != 4) return;
         
-        double loss = Abyss.loss(Double.parseDouble(constituents[0]), minecraft.player.level().dimension().location().getPath() == "overworld" ? minecraft.player.getY() : 0);
+        double loss = Abyss.loss(Double.parseDouble(constituents[0]), minecraft.player.level().dimension().location().getPath().equals("overworld") ? minecraft.player.getY() : 0);
         double corruption = Double.parseDouble(constituents[1])*loss;
 
         if(loss == 1 && ModConfigs.CUSTOM.LOSS.FULL.get()) {
