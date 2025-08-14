@@ -1,4 +1,6 @@
 {
-    "replace": false,
-    "values": ["curseoftheabyss:star_compass"]
+  "replace": false,
+  "values": [
+    "curseoftheabyss:star_compass"
+  ]
 }

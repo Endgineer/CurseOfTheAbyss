@@ -2,8 +2,10 @@ package net.endgineer.curseoftheabyss.core;
 
 import java.util.Map;
 
+import croissantnova.sanitydim.SanityMod;
 import croissantnova.sanitydim.SanityProcessor;
 import croissantnova.sanitydim.capability.SanityProvider;
+import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
 import net.endgineer.curseoftheabyss.CurseOfTheAbyss;
 import net.endgineer.curseoftheabyss.client.StrainsData;
@@ -83,7 +85,7 @@ public class ModEvents {
 
                 curse.getStrains().observeHollowing(true);
                 
-                if(ModList.get().isLoaded("thirst")) {
+                if(ModList.get().isLoaded(Thirst.ID)) {
                     event.player.getCapability(ModCapabilities.PLAYER_THIRST).ifPresent(thirst -> {
                         thirst.addExhaustion(event.player, (float) curse.getStrains().observeExhaustion(false) / 5.0F);
                     });
@@ -92,7 +94,7 @@ public class ModEvents {
 
                 curse.getStrains().observeNumbness(true);
 
-                if(ModList.get().isLoaded("sanitydim")) {
+                if(ModList.get().isLoaded(SanityMod.MODID)) {
                     event.player.getCapability(SanityProvider.CAP).ifPresent(sanity -> {
                         if(curse.getDerangement() > sanity.getSanity()) {
                             sanity.setSanity((float) curse.getDerangement());
@@ -118,8 +120,8 @@ public class ModEvents {
             if(player.level().dimension().location().getPath().equals("overworld") && Abyss.layer(player.getY()) > ModConfigs.CUSTOM.FINALITY.LAYER.get()) {
                 player.getInventory().clearContent();
                 
-                if(ModList.get().isLoaded("curios")) {
-                    CuriosApi.getCuriosHelper().getCuriosHandler(player).ifPresent(handler -> {
+                if(ModList.get().isLoaded(CuriosApi.MODID)) {
+                    CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
                         Map<String, ICurioStacksHandler> curios = handler.getCurios();
                         curios.forEach((id, stacksHandler) -> {
                             IDynamicStackHandler stacks = stacksHandler.getStacks();

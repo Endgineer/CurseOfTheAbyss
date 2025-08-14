@@ -26,9 +26,18 @@ public class ModOverlays {
 
     private static void onRegisterOverlay(RegisterGuiOverlaysEvent event) {
         event.registerAboveAll(CurseOfTheAbyss.MODID + "_overlay", (gui, guiGraphics, partialTicks, screenWidth, screenHeight) -> {
-            if(!minecraft.options.hideGui && (minecraft.player.isHolding(ModItems.STAR_COMPASS.get()) || ModList.get().isLoaded("curios") && !CuriosApi.getCuriosHelper().findFirstCurio(minecraft.player, ModItems.STAR_COMPASS.get()).isEmpty())) {
+            if(minecraft.options.hideGui) return;
+            
+            if(minecraft.player.isHolding(ModItems.STAR_COMPASS.get())) {
                 gui.setupOverlayRenderState(true, false);
                 render(guiGraphics, screenWidth, screenHeight);
+            } else if(ModList.get().isLoaded(CuriosApi.MODID)) {
+                CuriosApi.getCuriosInventory(minecraft.player).ifPresent(handler -> {
+                    if(handler.findFirstCurio(ModItems.STAR_COMPASS.get()).isPresent()) {
+                        gui.setupOverlayRenderState(true, false);
+                        render(guiGraphics, screenWidth, screenHeight);
+                    }
+                });
             }
         });
     }
