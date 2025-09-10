@@ -24,6 +24,7 @@ run
 jdk-17*
 src/generated
 src/test
+.vscode
 
 # Files from Forge MDK
 forge*changelog.txt

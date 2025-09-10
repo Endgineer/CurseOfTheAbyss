@@ -5,7 +5,7 @@ The sole purpose of this mod is to introduce the **Curse of the Abyss** from *Ma
 ### The Abyss
 
 <p align="center">
-  <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/.vscode/abyss.png?raw=true" height="50%" width="50%">
+  <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/docs/abyss.png?raw=true" height="50%" width="50%">
 </p>
 
 The Abyss is an enormous vertical landscape divided into seven unique layers, defined to be the region of the Overworld known as the Deep Underground, whose mouth begins at `y = 0` and whose depth is unknown to this day. Over the span of many years, with a spirit of adventure for the unknown and countless legends luring them in, the world's only remaining unexplored chasm has swallowed up a great many people. To those who offer up their bodies and challenge the chasm for which even darkness is no match, the Abyss is said to provide all. Life and death, Curses and Blessings &mdash; all of it. At the end of their journey, what fate will they choose to meet?
@@ -13,13 +13,13 @@ The Abyss is an enormous vertical landscape divided into seven unique layers, de
 ### The Field
 
 <p align="center">
-  <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/.vscode/field.gif?raw=true" height="50%" width="50%">
+  <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/docs/field.gif?raw=true" height="50%" width="50%">
 </p>
 
 The Abyss is permeated by a mysterious field, the very blood of the Abyss, that seems correlated with many of the eldritch phenomena surrounding the Abyss, most notably including the Curse of the Abyss, a set of afflictions that seem to grow more severe with depth. The concentration of this field as well as the afflictions that result from it seem to grow more severe with depth. Rumors say that the affictions do not seem to occur in delvers who are descending into the Abyss, only those who are attempting to ascend out of it. Despite this, prolonged exposure to the field seems to cause the minds and bodies of delvers to literally warp until they are beyond recognition.
 
 <p align="center">
-  <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/.vscode/strains.gif?raw=true">
+  <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/docs/strains.gif?raw=true">
 </p>
 
 The Strains of Ascension is the scientific name referring to the afflictions associated with the Curse of the Abyss. These strains, shown below along with their Minecraft manifestations, differ in each layer and become more severe with depth:
@@ -98,7 +98,7 @@ $$P(\xi, x, y, z, t, \tau) = \rho(\xi, x, y, z, t, \tau) \cdot 1 \cdot \phi(y)$$
 The $\rho(\xi, x, y, z, t, \tau)$ function is the field's density or the concentration of the field at a given 6D point. The $\phi(y)$ function is the field's column depth or how much field influence is above the player's head. In terms of variables, we have the world seed $\xi$, the spatial coordinates $x$, $y$ and $z$, the universal time $t$ which cannot be affected and counts the age of the world, and the astronomical time $\tau$ which is affected by the `/time` command. Let's first conceptually look at how the field causes the curse. The field itself can be simplified into a 3D scalar field; we simply take a world with seed $\xi = 0$ frozen at creation time $t = 0$ and astronomical time $\tau = 0$. Then, to help simplify the analysis, we effectively take a single 2D cross-section of the 3D scalar field by looking at a specific y-level, say $y = \frac{\mathcal{A}}{2}$. Finally, we generate a surface plot of this 2D scalar field, treating $P(x, z) = 0$ as valleys and $P(x, y) = 1$ as peaks. The resulting fabric will appear similar to the figure below.
 
 <p align="center">
-  <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/.vscode/fabric.jpg?raw=true" height="50%" width="50%">
+  <img src="https://github.com/Endgineer/CurseOfTheAbyss/blob/1.20.1/docs/fabric.jpg?raw=true" height="50%" width="50%">
 </p>
 
 We can imagine that the 3D field is thus many of these fabric sheets stacked on top of each other, that these fabric sheets are invisible to the naked eye and permeable, and that each of these fabric sheets undulates with time. A delver can freely move horizontally within these sheets without concern. When a delver descents through the sheets, each sheet the delver passes through is permanently bound to the delver's soul, without visibly reacting. The risk of being afflicted by the curse begins when the delver attempts to ascend. Each sheet below the delver that is bound to them begins to stretch upwards, as if trying to pull the delver back down. The delver does not feel anything, but they accumulate a **longing** for the deepest sheet bound to their soul. When the maximum longing $L$ is exceeded, every **per-tick** distance ascended induces a stress $\sigma$ of $\Delta y$ on the delver.
