@@ -17,6 +17,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraft.server.level.ServerPlayer;
 import net.endgineer.curseoftheabyss.core.ModConfigs;
+import net.endgineer.curseoftheabyss.core.ModEffects;
 import net.endgineer.curseoftheabyss.core.ModVariables;
 import net.endgineer.curseoftheabyss.network.CursePacket;
 import net.endgineer.curseoftheabyss.network.PacketHandler;
@@ -58,6 +59,10 @@ public class CurseCapability implements Serializable {
         this.log = null;
     }
 
+    public void clearStrains() {
+        this.strains.clear();
+    }
+
     public void tick(Player player) {
         if(this.constitution == 0) this.constitution = player.getMaxHealth();
 
@@ -90,7 +95,10 @@ public class CurseCapability implements Serializable {
         }
 
         this.strains.tick(stress, current_depth, field);
-
+        if(player.hasEffect(ModEffects.CURSE_RESISTANCE.get())) {
+            this.clearStrains();
+        }
+        
         this.constitution = Math.max(0, this.constitution - this.strains.observeHollowing(false));
         
         sync(player, field);

@@ -1,6 +1,7 @@
 {
     "item.curseoftheabyss.star_compass": "Star Compass",
     "tooltip.curseoftheabyss.abyss_relic": "Relic of the Abyss",
+    "effect.curseoftheabyss.curse_resistance": "Curse Resistance",
     "commands.curseoftheabyss.all.failure.player_dne": "No player by that name was found currently on the server.",
     "commands.curseoftheabyss.measure.start.success": "Started measuring %1$s's parameters...",
     "commands.curseoftheabyss.measure.start.failure": "Failed to start measuring %1$s's parameters: Measuring has already started.",

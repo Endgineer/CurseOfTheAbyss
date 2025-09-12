@@ -3,6 +3,7 @@ package net.endgineer.curseoftheabyss;
 import com.mojang.logging.LogUtils;
 
 import net.endgineer.curseoftheabyss.core.ModConfigs;
+import net.endgineer.curseoftheabyss.core.ModEffects;
 import net.endgineer.curseoftheabyss.core.ModItems;
 import net.endgineer.curseoftheabyss.core.ModOverlays;
 import net.endgineer.curseoftheabyss.network.PacketHandler;
@@ -34,6 +35,7 @@ public class CurseOfTheAbyss {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.register(modEventBus);
+        ModEffects.register(modEventBus);
         if(!FMLEnvironment.dist.isDedicatedServer()) {
             ModOverlays.register(modEventBus);
         }

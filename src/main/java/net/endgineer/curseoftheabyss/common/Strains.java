@@ -76,6 +76,28 @@ public class Strains implements Serializable {
         this.stress_tick = 0;
     }
 
+    public void clear() {
+        this.strain_hollowing = 0;
+        this.strain_deformation = 0;
+        this.strain_deprivation = 0;
+        this.strain_exhaustion = 0;
+        this.strain_hallucination = 0;
+        this.strain_numbness = 0;
+
+        this.stress = 0;
+        this.buffer_tick = 0;
+        this.stress_tick = 0;
+
+        for(int i = 0; i < 11; i++) {
+            this.buffer_deformation[i] = 0;
+            this.buffer_hollowing[i] = 0;
+            this.buffer_deprivation[i] = 0;
+            this.buffer_exhaustion[i] = 0;
+            this.buffer_hallucination[i] = 0;
+            this.buffer_numbness[i] = 0;
+        }
+    }
+
     public double observeHollowing(boolean alter) {
         double temp = this.strain_hollowing;
         if(alter) { this.strain_hollowing = 0; }
