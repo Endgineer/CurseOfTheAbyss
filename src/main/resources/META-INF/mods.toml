@@ -73,7 +73,7 @@ description='''${mod_description}'''
     # the modid of the dependency
     modId="sanitydim" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
-    mandatory=false #mandatory
+    mandatory=true #mandatory
     # The version range of the dependency
     versionRange="[1.1.0,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the dependency is not mandatory

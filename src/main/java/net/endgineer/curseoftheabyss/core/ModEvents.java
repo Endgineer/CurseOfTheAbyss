@@ -2,7 +2,6 @@ package net.endgineer.curseoftheabyss.core;
 
 import java.util.Map;
 
-import croissantnova.sanitydim.SanityMod;
 import croissantnova.sanitydim.SanityProcessor;
 import croissantnova.sanitydim.capability.SanityProvider;
 import dev.ghen.thirst.Thirst;
@@ -94,15 +93,13 @@ public class ModEvents {
 
                 curse.getStrains().observeNumbness(true);
 
-                if(ModList.get().isLoaded(SanityMod.MODID)) {
-                    event.player.getCapability(SanityProvider.CAP).ifPresent(sanity -> {
-                        if(curse.getDerangement() > sanity.getSanity()) {
-                            sanity.setSanity((float) curse.getDerangement());
-                        }
+                event.player.getCapability(SanityProvider.CAP).ifPresent(sanity -> {
+                    if(curse.getDerangement() > sanity.getSanity()) {
+                        sanity.setSanity((float) curse.getDerangement());
+                    }
 
-                        SanityProcessor.addSanity(sanity, (float) curse.getStrains().observeHallucination(true), (ServerPlayer) event.player);
-                    });
-                }
+                    SanityProcessor.addSanity(sanity, (float) curse.getStrains().observeHallucination(true), (ServerPlayer) event.player);
+                });
                 
                 event.player.hurt(new DamageSource(Abyss.CURSE_DAMAGE), (float) curse.getStrains().observeDeformation(true));
                 
