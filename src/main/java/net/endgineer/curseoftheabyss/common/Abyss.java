@@ -12,6 +12,10 @@ public class Abyss {
     public static final Holder<DamageType> CURSE_DAMAGE = Holder.direct(
         new DamageType(CurseOfTheAbyss.MODID+"_cursed", DamageScaling.NEVER, 0.0F, DamageEffects.HURT)
     );
+    
+    public static double getLayerSpan() {
+        return ModVariables.ABYSS.SPAN/7.0;
+    }
 
     public static int layer(double y) {
         return (int) Math.ceil(7 * Abyss.pressure(y));
